@@ -7,6 +7,12 @@ import { Doc, Id } from '../../convex/_generated/dataModel';
 import type { Pose } from '../../convex/schema';
 import { Character } from './Character';
 
+// Worlds seeded before the robot sprites still store the old texture URL.
+// Both sheets share a layout, so swap it client-side without reseeding.
+const TextureOverrides: Record<string, string> = {
+  '/assets/32x32folk.png': '/assets/32x32robots.png',
+};
+
 const SpeechDurationMs = 2000;
 const SpokeRecentlyMs = 5_000;
 
@@ -56,7 +62,7 @@ export const Player = ({
         playerState.lastChat?.message.type === 'responded' &&
         (playerState.lastChat.message.ts ?? 0) > time.current - SpeechDurationMs
       }
-      textureUrl={character.textureUrl}
+      textureUrl={TextureOverrides[character.textureUrl] ?? character.textureUrl}
       spritesheetData={character.spritesheetData}
       speed={character.speed}
       onClick={() => {
