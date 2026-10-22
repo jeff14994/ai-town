@@ -57,6 +57,9 @@ export const Character = ({
   useEffect(() => {
     if (isMoving) {
       ref.current?.play();
+    } else {
+      // Frame 0 is the standing pose, so idle characters don't freeze mid-stride.
+      ref.current?.gotoAndStop(0);
     }
   }, [direction, isMoving]);
 
